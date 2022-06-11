@@ -31,9 +31,10 @@ const PostsController = {
     if (!req.file) {
       res.status(401).json({ error: 'Please provide an image' });
     }
-    await fileUpload.save(req.file.buffer);
-    // return res.status(201).json({name: filename}).redirect("/posts/new");
-    return res.status(201).redirect("/posts/new");
+    const fileName = await fileUpload.save(req.file.buffer);
+    // return res.status(201).redirect("/posts/new");
+    return res.status(201).redirect("/posts/new/?name=" + fileName);
+
   },
 };
 
