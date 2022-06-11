@@ -23,6 +23,10 @@ const PostsController = {
       res.status(201).redirect("/posts");
     });
   },
+  Upload: (req, res) => {
+    console.log('image uploaded');
+    res.status(201).redirect("/posts/new");
+  },
 };
 
 module.exports = PostsController;
