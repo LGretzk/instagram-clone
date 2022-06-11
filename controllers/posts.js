@@ -1,4 +1,6 @@
 const Post = require("../models/post");
+const path = require("path");
+const Resize = require("../Resize");
 
 const PostsController = {
   Index: (req, res) => {
@@ -23,9 +25,15 @@ const PostsController = {
       res.status(201).redirect("/posts");
     });
   },
-  Upload: (req, res) => {
-    console.log('image uploaded');
-    res.status(201).redirect("/posts/new");
+  Upload: async (req, res) => {
+    const imagePath = path.join(__dirname, './../public/images');
+    const fileUpload = new Resize(imagePath);
+    if (!req.file) {
+      res.status(401).json({ error: 'Please provide an image' });
+    }
+    await fileUpload.save(req.file.buffer);
+    // return res.status(201).json({name: filename}).redirect("/posts/new");
+    return res.status(201).redirect("/posts/new");
   },
 };
 
