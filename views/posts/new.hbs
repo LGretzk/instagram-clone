@@ -1,15 +1,7 @@
-<form id="new-post-form" action="/posts" method="post">
-  <label for="message">Message: </label>
-  <input id="message" type="text" name="message" value="">
-  <input type="submit" value="Submit">
-</form>
-
-<form id="upload-photo-form" action="/posts/upload" method="post" enctype="multipart/form-data">
+<br/><br/>
+<form id="upload-photo-form" action="/posts" method="post" enctype="multipart/form-data">
+  <label for="message">Message</label>
+  <input id="message" type="text" name="message" value="" ><br/><br/>
   <input type="file" name="image" accept="image/*" > 
-  <input id="message-2" type="text" name="message" value="" > 
   <input type="submit" name="upload" value="Upload" >
 </form>
-
-<img src="{{url}}" />
-
-{{!-- image/jpeg if only accepting jpegs --}}

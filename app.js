@@ -5,8 +5,6 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const session = require("express-session");
 const methodOverride = require("method-override");
-const bodyParser = require('body-parser');
-// require('dotenv').config();
 
 const homeRouter = require("./routes/home");
 const postsRouter = require("./routes/posts");
@@ -21,8 +19,6 @@ app.set("view engine", "hbs");
 
 app.use(logger("dev"));
 app.use(express.json());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));

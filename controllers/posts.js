@@ -1,6 +1,5 @@
 const Post = require("../models/post");
-// const path = require("path");
-const Resize = require("../Resize");
+const Format = require("../Format");
 const receiveImage = require('../uploadMiddleware');
 const {uploadImage} = require('../utilities/cloudinaryUtil');
 
@@ -17,17 +16,6 @@ const PostsController = {
   New: (req, res) => {
     res.render("posts/new", {});
   },
-  Create: (req, res) => {
-    const post = new Post(req.body);
-    post.save((err) => {
-      if (err) {
-        throw err;
-      }
-
-      res.status(201).redirect("/posts");
-    });
-  },
-
   Upload: (req, res) => {
     receiveImage(req, res, async (err) => {
       // handling errors from multer
@@ -36,9 +24,8 @@ const PostsController = {
       }
 
       try {
-        // format the image with sharp (i.e. Resize class)
-        console.log(req.body.message)
-        const file = new Resize();
+        // format the image with sharp (i.e. Format class)
+        const file = new Format();
         const fileToUpload = await file.format(req.file.buffer);
 
         if(!fileToUpload) {
@@ -51,9 +38,14 @@ const PostsController = {
         const uploadResult = await uploadImage(imageStream, imageName); 
         const uploadUrl = uploadResult.url;
 
-        // return res.status(201).redirect("/posts/new/?pic_url=" + uploadUrl)
-        return res.status(201).redirect("/posts/new");
-        
+        // save in the posts table
+        const post = new Post({message: req.body.message, picture_url: uploadUrl});
+        await post.save((err) => {
+          if (err) {
+            throw err;
+          }
+          return res.status(201).redirect("/posts");
+        }); 
       } catch (error) {
         return res.json({error: 'Failed to upload'})
       }

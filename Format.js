@@ -1,15 +1,9 @@
 const sharp = require('sharp');
 const { v4: uuidv4 } = require('uuid');
-// const path = require('path');
 
-class Resize {
-  // constructor(folder) {
-  //   this.folder = folder;
-  // }
+class Format {
   async format(buffer) {
-    const fileName = Resize.fileName();
-    // const filepath = this.filepath(filename);
-    // console.log(filepath);
+    const fileName = Format.fileName();
     
     const formattedFile = await sharp(buffer)
       .resize(400, 400, {
@@ -18,16 +12,12 @@ class Resize {
       })
       .toFormat("jpeg", {mozjpeg: true })
       .toBuffer();
-      // .toFile(filepath);
 
     return {fileName: fileName, formattedFile: formattedFile};
   }
   static fileName() {
     return `${uuidv4()}`;
   }
-  // filepath(filename) {
-  //   return path.resolve(`${this.folder}/${filename}`)
-  // }
 }
 
-module.exports = Resize;
+module.exports = Format;
